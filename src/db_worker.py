@@ -72,12 +72,8 @@ def set_new_value(
         collection_name="test_collection",
 ) -> InsertOneResult:
     collection = client[db_name][collection_name]
-    obj = collection.find_one(contidion)
-    if obj is not None:
-        return collection.update_one(contidion, {
-            '$set': {
-                field: new_value
-            }
-        })
-    if obj is None and create_new:
-        return collection.insert_one({field: new_value})
+    return collection.update_one(contidion, {
+        '$set': {
+            field: new_value
+        }
+    }, upsert=create_new)
